@@ -1,0 +1,6 @@
+/checkpoints
+custom.weights
+obj.weights
+/detections
+/data/video
+/data/images

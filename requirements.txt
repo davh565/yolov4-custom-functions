@@ -1,0 +1,9 @@
+opencv-python==4.5.5.64
+lxml
+tqdm
+tensorflow==2.10.0rc2
+absl-py
+easydict
+matplotlib
+pillow
+pytesseract

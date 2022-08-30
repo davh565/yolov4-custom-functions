@@ -1,0 +1,9 @@
+tensorflow-gpu==2.10.0rc2
+opencv-python==4.5.5.64
+lxml
+tqdm
+absl-py
+matplotlib
+easydict
+pillow
+pytesseract
