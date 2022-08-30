@@ -229,9 +229,19 @@ def main(_argv):
         for track in tracker.tracks:
             if not track.is_confirmed() or track.time_since_update > 1:
                 continue 
-            bbox = track.to_tlbr()
+            bbox = track.to_tlwh()
+            # bbox = track.to_tlbr()
             class_name = track.get_class()
             
+            if FLAGS.plate and class_name == 'License_Plate':
+                print(bbox)
+                # image_h, image_w, _ = image.shape
+                # height_ratio = int(image_h / 25)
+                # plate_number = utils.recognize_plate(image, coor)
+                # if plate_number != None:
+                #     cv2.putText(image, plate_number, (int(coor[0]), int(coor[1]-height_ratio)), 
+                #             cv2.FONT_HERSHEY_SIMPLEX, 1.25, (255,255,0), 2)
+
         # draw bbox on screen
             color = colors[int(track.track_id) % len(colors)]
             color = [i * 255 for i in color]

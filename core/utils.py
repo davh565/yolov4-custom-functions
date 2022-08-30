@@ -237,6 +237,7 @@ def draw_bbox(image, bboxes, info = False, counted_classes = None, show_label=Tr
             continue
         else:
             if read_plate and class_name == 'License_Plate':
+                print(coor)
                 height_ratio = int(image_h / 25)
                 plate_number = recognize_plate(image, coor)
                 if plate_number != None:
