@@ -233,8 +233,7 @@ def main(_argv):
             # bbox = track.to_tlbr()
             class_name = track.get_class()
             
-            if FLAGS.plate and class_name == 'License_Plate':
-                print(bbox)
+                # print(bbox)
                 # image_h, image_w, _ = image.shape
                 # height_ratio = int(image_h / 25)
                 # plate_number = utils.recognize_plate(image, coor)
@@ -245,9 +244,19 @@ def main(_argv):
         # draw bbox on screen
             color = colors[int(track.track_id) % len(colors)]
             color = [i * 255 for i in color]
-            cv2.rectangle(frame, (int(bbox[0]), int(bbox[1])), (int(bbox[2]), int(bbox[3])), color, 2)
-            cv2.rectangle(frame, (int(bbox[0]), int(bbox[1]-30)), (int(bbox[0])+(len(class_name)+len(str(track.track_id)))*17, int(bbox[1])), color, -1)
-            cv2.putText(frame, class_name + "-" + str(track.track_id),(int(bbox[0]), int(bbox[1]-10)),0, 0.75, (255,255,255),2)
+            if FLAGS.plate and class_name == 'License_Plate':
+                adj = bbox[2]*0.02
+                bbox = [bbox[0]-adj,bbox[1],bbox[2]+2*adj,bbox[3]]
+                
+                # print(frame.shape,bbox)
+                plate_number = utils.recognize_plate(frame, bbox)
+                cv2.rectangle(frame, (int(bbox[0]), int(bbox[1])), (int(bbox[2]), int(bbox[3])), color, 2)
+                cv2.rectangle(frame, (int(bbox[0]), int(bbox[1]-30)), (int(bbox[0])+(len(class_name)+len(str(track.track_id))+len(plate_number)-2)*17, int(bbox[1])), color, -1)
+                cv2.putText(frame, class_name + "-" + str(track.track_id) +": "+plate_number,(int(bbox[0]), int(bbox[1]-10)),0, 0.75, (255,255,255),2)
+            else:
+                cv2.rectangle(frame, (int(bbox[0]), int(bbox[1])), (int(bbox[2]), int(bbox[3])), color, 2)
+                cv2.rectangle(frame, (int(bbox[0]), int(bbox[1]-30)), (int(bbox[0])+(len(class_name)+len(str(track.track_id))+1)*17, int(bbox[1])), color, -1)
+                cv2.putText(frame, class_name + "-" + str(track.track_id),(int(bbox[0]), int(bbox[1]-10)),0, 0.75, (255,255,255),2)
 
         # if enable info flag then print details about each track
             if FLAGS.info:
